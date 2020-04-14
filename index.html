@@ -1,0 +1,183 @@
+<!doctype html>
+
+<html lang="en"> 
+
+<head>
+ 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LANDING PAGE | MOVIES PIXELS</title>
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" media="screen" href="assets/css/style.css" >
+</head>
+
+<body>
+  <!--container start-->
+  <div class="container login-page">
+    <!--header section start-->
+    <header>
+      <div class="wrapper">
+        <ul class="loginpage-header">
+          <li>horizontal line</li>
+          <li>
+            <h1>
+              <a href="movies.html" title="Logo">
+                <img src="./assets/img/logo.png" alt="Logo">
+              </a>
+            </h1>
+          </li>
+          <li>horizontal line</li>
+        </ul>
+      </div>
+    </header>
+    <!--header section end-->
+    <!--main section start-->
+    <main>
+
+      <!-- banner section starts here -->
+      <section class="banner">
+        <div class="wrapper">
+          <div class="get-started">
+            <a href="#FIXME" title="Sign Up" class="sign-up-button">sign up</a>
+            <a href="#FIXME" title="Sign In" class="sign-in-button">sign in</a>
+            <span>the string wich <span>connects us</span></span>
+          </div>
+
+          <ul>
+            <li data-video-source="./assets/videos/avengers.mp4">
+              <figure><img src="./assets/img/avengers.jpg" alt="Avengers Trailer"></figure>
+              <a class="overlay">video overlay</a>
+            </li>
+            
+            <li data-video-source="./assets/videos/starwars.mp4">
+              <figure><img src="./assets/img/starwars.jpg" alt="Starwars Trailer"></figure>
+              <a class="overlay">video overlay</a>
+            </li>
+          </ul>
+        </div>
+        <h2>movies pixels</h2>
+      </section>
+      <!-- banner section ends here -->
+
+      <!-- modal section starts here -->
+      <section class="modal">
+        <div class="wrapper">
+          <!-- sign-in/sign-up form html starts here  -->
+          <div class="form-modal">
+            <!-- sign-up form -->
+            <form class="sign-up-form">
+              <h2>sign up</h2>
+              <span>use your email for registration</span>
+
+              <div class="form-group">
+                <label>username :</label>
+                <input  class="sign-up-name" type="text" data-regex="username_regex">
+                <a class="green">green</a>
+                <a class="red">red</a>
+                <span>name must be in between 2-10 characters and it should not contain any numbers</span>
+              </div>
+
+              <div class="form-group">
+                <label>e-mail id :</label>
+                <input  class="sign-up-email" type="text" data-regex="email_regex">
+                <a class="green">green</a>
+                <a class="red">red</a>
+                <span>please enter the valid email id or email id already exist</span>
+              </div>
+
+              <div class="form-group">
+                <label>password :</label>
+                <input  class="sign-up-password" type="password" data-regex="password_regex">
+                <a class="green">green</a>
+                <a class="red">red</a>
+                <span>password must contain atleast one special character and number</span>
+              </div>
+
+              <div class="form-controls">
+                <a class="sign-up"  href="#FIXME">sign up</a>
+              </div>
+            </form>
+
+            <!-- sign-in form -->
+            <form class="sign-in-form">
+              <h2>sign in</h2>
+              <span>use your account to sign in.</span>
+
+              <div class="form-group">
+                <label>username :</label>
+                <input  class="sign-in-email" type="text"  data-regex="email_regex">
+                <a class="red">red</a>
+                <span>please enter the valid email id or register first</span>
+              </div>
+
+              <div class="form-group">
+                <label>password :</label>
+                <input  class="sign-in-password" type="password">
+                <a class="red">red</a>
+                <span>password does not match</span>
+              </div>
+
+              <span>forget your password ?</span>
+
+              <div class="form-controls">
+                <a class="sign-in" href="#FIXME">sign in</a>
+              </div>
+            </form>
+
+            <!-- pannel-container for switching the forms -->
+            <div class="pannel-container">
+              <div class="pannel-background">
+                <div class="pannel-right">
+                  <h2>welcome back !</h2>
+                  <span>to keep connected with us please login with your account</span>
+                  <a href="#FIXME" title="Sign in" id="sign-in-form">sign in</a>
+                </div>
+
+                <div class="pannel-left">
+                  <h2>hello, friend !</h2>
+                  <span>enter your personal details and start the journey with us</span>
+                  <a href="#FIXME" title="Sign up" id="sign-up-form">sign up</a>
+                </div>  
+              </div>
+            </div>
+          </div>
+          <!-- sign-in/sign-up form html ends here  -->
+
+        <!-- video modal html starts here -->
+        <div class="video-modal">
+          <video src="./assets/videos/avengers.mp4" controls autoplay ></video>
+        </div>
+        <!-- video modal html ends here -->
+
+        <div class="modal-controls">
+          <a href="#FIXME" class="close" title="Close">close</a>
+        </div>
+
+        </div>
+      </section>
+      <!-- modal section ends here -->
+
+    </main>
+    <!--main section end-->
+    <!--footer section start-->
+    <footer>
+      <div class="wrapper">
+      <ul class="social-icon">
+        <li>horizontal line</li>
+        <li><a href="#FIXME" target="_blank" class="facebook" title="Facebook">facebook</a></li>
+        <li><a href="#FIXME" target="_blank" class="instagram" title="Instagram">instagram</a></li>
+        <li><a href="#FIXME" target="_blank" class="twitter" title="Twitter">twitter</a></li>
+        <li><a href="#FIXME" target="_blank" class="youtube" title="You Tube">you tube</a></li>
+      </ul>
+    </div>
+    </footer>
+    <!--footer section end-->
+  </div>
+  <!--container end-->
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
