@@ -173,7 +173,7 @@ window.onload = function () {
         var password = document.querySelector(".sign-up-password");
         alert("FORM SUCCESSFULLY SUBMITED");
 
-        var unicode = "user" + window.localStorage.length;
+        var unicode = "tmdbuser" + window.localStorage.length;
 
         var data = {
           name: username.value,
@@ -196,7 +196,7 @@ window.onload = function () {
       if (localStorage.length !== 0) {
         for (var key in localStorage) {
           if (key === "length") { break; }
-          else {
+          else if (key.includes("tmdbuser")) {
             var parseData = JSON.parse(localStorage[key]);
 
             if (Email.value === parseData.mail) {
@@ -239,11 +239,18 @@ window.onload = function () {
   } else {
 
     // some confidential information
+    var base_url = "https://api.themoviedb.org/3/";
     var key = "b4803476184cb34c231d8f2f07da0bc7";
+    var contractual_url = "&language=en-US&page=1";
+    var trending_config = "trending";
+    var top_rated_config = "top_rated";
+    var most_popular_config = "popular";
+    var now_playing_config = "now_playing";
+    var upcoming_config = "upcoming";
+    var airing_today_config = "airing_today";
+    var on_air_config = "on_the_air";
     var currentUrl = new URL(window.location.href);
     var loggedInUser = currentUrl.searchParams.get("userid");
-    var searchType = null;
-    var searchId = null;
 
     // javascript for rest of the pages except login page 
     var hamburger = this.document.querySelector(".hamburger");
@@ -261,6 +268,7 @@ window.onload = function () {
     hamburger.addEventListener("click", function () {
       document.querySelector("nav").classList.toggle("active");
       hamburger.classList.toggle("active-hamburger");
+      document.querySelector("html").classList.toggle("no-scroll");
     })
 
     // function for activating search bar when inner width is less than 1024px
@@ -288,7 +296,7 @@ window.onload = function () {
     =================================*/
     if (page_class.classList.contains("movies")) {
 
-      var category = new URL(window.location.href).searchParams.get("category");
+      var category = currentUrl.searchParams.get("category");
 
       window.addEventListener("scroll", scrollAnimate);
 
@@ -296,7 +304,7 @@ window.onload = function () {
         var pageAt = (window.scrollY + window.innerHeight);
 
         var counter = document.querySelector(".counters");
-        var counterAt = (counter.offsetTop + counter.offsetHeight);
+        var counterAt = (counter.offsetTop + counter.offsetHeight * 0.75);
 
         if (pageAt > counterAt) { runCounter(counter); }
       }
@@ -304,35 +312,35 @@ window.onload = function () {
       // function for search the movies
       searchFeild.addEventListener("keyup", function () {
         var searched_query = searchFeild.value;
-        var url = "https://api.themoviedb.org/3/search/" + category + "?api_key=" + key + "&language=en-US&query=" + searched_query + "&page=1&include_adult=false";
+        var url = base_url + "search/" + category + "?api_key=" + key + "&language=en-US&query=" + searched_query + "&page=1&include_adult=false";
         search(url, searched_query, "title");
       });
 
       // function for banner displaying
-      var banner_url = "https://api.themoviedb.org/3/trending/" + category + "/day?api_key=" + key;
+      var banner_url = base_url + trending_config + "/" + category + "/day?api_key=" + key;
       bannerDevelopment(banner_url, "title", "release_date");
 
       // function for top rated movies
-      var top_rated_movies_url = "https://api.themoviedb.org/3/" + category + "/top_rated?api_key=" + key + "&language=en-US&page=1";
+      var top_rated_movies_url = base_url + category + "/" + top_rated_config + "?api_key=" + key + contractual_url;
       var top_rated_slider_place = document.querySelector(".top-rated-slider");
-      sliderDevelopment(top_rated_movies_url, top_rated_slider_place, "title", "release_date");
+      sliderDevelopment(top_rated_movies_url, top_rated_slider_place, "title", "release_date", top_rated_config);
 
       // function for most popular movies
-      var most_popular_movies_url = "https://api.themoviedb.org/3/" + category + "/popular?api_key=" + key + "&language=en-US&page=1";
+      var most_popular_movies_url = base_url + category + "/" + most_popular_config + "?api_key=" + key + contractual_url;
       var most_popular_slider_place = document.querySelector(".most-popular-slider");
-      sliderDevelopment(most_popular_movies_url, most_popular_slider_place, "title", "release_date");
+      sliderDevelopment(most_popular_movies_url, most_popular_slider_place, "title", "release_date", most_popular_config);
 
 
       // function for now playing movies
-      var now_playing_movies_url = "https://api.themoviedb.org/3/" + category + "/now_playing?api_key=" + key + "&language=en-US&page=1"
-      var now_playing_gallery_place = document.querySelector(".now-playing-movies ul", "movie");
-      galleryDevelopment(now_playing_movies_url, now_playing_gallery_place, "title");
+      var now_playing_movies_url = base_url + category + "/" + now_playing_config + "?api_key=" + key + contractual_url;
+      var now_playing_gallery_place = document.querySelector(".now-playing-movies ul");
+      galleryDevelopment(now_playing_movies_url, now_playing_gallery_place, "title", now_playing_config);
 
 
       // function for upcoming movies
-      var upcoming_movies_url = "https://api.themoviedb.org/3/" + category + "/upcoming?api_key=" + key + "&language=en-US&page=1"
+      var upcoming_movies_url = base_url + category + "/" + upcoming_config + "?api_key=" + key + contractual_url;
       var upcoming_gallery_place = document.querySelector(".upcoming-movies ul");
-      galleryDevelopment(upcoming_movies_url, upcoming_gallery_place, "title", true);
+      galleryDevelopment(upcoming_movies_url, upcoming_gallery_place, "title", upcoming_config, true);
 
     }
     /*=================================
@@ -340,48 +348,95 @@ window.onload = function () {
     =================================*/
     else if (page_class.classList.contains("tvshows")) {
 
-      var category = new URL(window.location.href).searchParams.get("category");
+      var category = currentUrl.searchParams.get("category");
+
+      // function for search the tvshows
+      searchFeild.addEventListener("keyup", function () {
+        var searched_query = searchFeild.value;
+        var url = base_url + "search/" + category + "?api_key=" + key + "&language=en-US&query=" + searched_query + "&page=1&include_adult=false";
+        search(url, searched_query, "name");
+      });
+
+      // function for banner displaying
+      var banner_url = base_url + trending_config + "/" + category + "/day?api_key=" + key;
+      bannerDevelopment(banner_url, "name", "first_air_date");
+
+      // function for top rated tvshows
+      var top_rated_tvshows_url = base_url + category + "/" + top_rated_config + "?api_key=" + key + contractual_url;
+      var top_rated_slider_place = document.querySelector(".top-rated-slider");
+      sliderDevelopment(top_rated_tvshows_url, top_rated_slider_place, "name", "first_air_date", top_rated_config);
+
+      // function for on air tvshows
+      var on_air_tvshows_url = base_url + category + "/" + on_air_config + "?api_key=" + key + contractual_url;
+      var on_air_slider_place = document.querySelector(".on-air-slider");
+      sliderDevelopment(on_air_tvshows_url, on_air_slider_place, "name", "first_air_date", on_air_config);
+
+
+      // function for airing today tvshows
+      var airing_today_tvshows_url = base_url + category + "/" + airing_today_config + "?api_key=" + key + contractual_url;
+      var airing_today_gallery_place = document.querySelector(".airing-today-tvshows ul");
+      galleryDevelopment(airing_today_tvshows_url, airing_today_gallery_place, "name", airing_today_config);
+
+
+      // function for trending tvshows
+      var trending_tvshows_url = base_url + category + "/" + most_popular_config + "?api_key=" + key + contractual_url;
+      var trending_tvshows_gallery_place = document.querySelector(".trending-news ul");
+      galleryDevelopment(trending_tvshows_url, trending_tvshows_gallery_place, "name", most_popular_config, true);
+
+    }
+
+    else if (page_class.classList.contains("pagination")) {
+
+      var category = currentUrl.searchParams.get("category");
+      var config_data = currentUrl.searchParams.get("config");
+      var title, date;
+
+      if (category === "movie") {
+        title = "title";
+        date = "release_date";
+      }
+      else if (category === "tv") {
+        title = "name";
+        date = "first_air_date";
+      }
+
 
       // function for search the tvshows
       searchFeild.addEventListener("keyup", function () {
         var searched_query = searchFeild.value;
         var url = "https://api.themoviedb.org/3/search/" + category + "?api_key=" + key + "&language=en-US&query=" + searched_query + "&page=1&include_adult=false";
-        search(url, searched_query, "name");
+        search(url, searched_query, title);
       });
 
-      // function for banner displaying
-      var banner_url = "https://api.themoviedb.org/3/" + category + "/popular?api_key=" + key + "&language=en-US&page=1";
-      bannerDevelopment(banner_url, "name", "first_air_date");
 
-      // function for top rated tvshows
-      var top_rated_tvshows_url = "https://api.themoviedb.org/3/" + category + "/top_rated?api_key=" + key + "&language=en-US&page=1";
-      var top_rated_slider_place = document.querySelector(".top-rated-slider");
-      sliderDevelopment(top_rated_tvshows_url, top_rated_slider_place, "name", "first_air_date");
+      var heading = document.querySelector("h3");
+      heading.innerText = config_data.replace("_", " ") + " " + category + " shows";
 
-      // function for on air tvshows
-      var on_air_tvshows_url = "https://api.themoviedb.org/3/" + category + "/on_the_air?api_key=" + key + "&language=en-US&page=1";
-      var on_air_slider_place = document.querySelector(".on-air-slider");
-      sliderDevelopment(on_air_tvshows_url, on_air_slider_place, "name", "first_air_date");
+      // function for pagination list development
+      var generated_url = base_url + category + "/" + config_data + "?api_key=" + key + contractual_url;
+      var pagination_list_place = this.document.querySelector(".pagination-list");
+      paginationListDevelopment(generated_url, pagination_list_place, title, date);
 
+      var pagination_bar_array = Array.from(this.document.querySelectorAll(".pagination-bar li"));
+      pagination_bar_array.forEach(function (element) {
+        element.addEventListener("click", function () {
 
-      // function for airing today tvshows
-      var airing_today_tvshows_url = "https://api.themoviedb.org/3/" + category + "/airing_today?api_key=" + key + "&language=en-US&page=1"
-      var airing_today_gallery_place = document.querySelector(".airing-today-tvshows ul");
-      galleryDevelopment(airing_today_tvshows_url, airing_today_gallery_place, "name");
+          // document.querySelector(".loader").classList.remove("none");
+          var previous_active = document.querySelector(".pagination-bar .active-page");
+          previous_active.classList.remove("active-page");
+          element.classList.add("active-page");
 
-
-      // function for trending tvshows
-      var trending_tvshows_url = "https://api.themoviedb.org/3/trending/" + category + "/day?api_key=" + key;
-      var trending_tvshows_gallery_place = document.querySelector(".trending-news ul");
-      galleryDevelopment(trending_tvshows_url, trending_tvshows_gallery_place, "name", true);
-
+          var updated_contractual_url = contractual_url.slice(0, -1) + element.innerText;
+          var generated_paginated_url = base_url + category + "/" + config_data + "?api_key=" + key + updated_contractual_url;
+          paginationListDevelopment(generated_paginated_url, pagination_list_place, title, date);
+        })
+      });
     }
     /*=================================
       details page scripting starts here
     =================================*/
     else if (page_class.classList.contains("details")) {
 
-      var currentUrl = new URL(window.location.href);
       var userid = currentUrl.searchParams.get("userid");
       var category = currentUrl.searchParams.get("category");
       var tmdbId = currentUrl.searchParams.get("uniqueid");
@@ -398,22 +453,22 @@ window.onload = function () {
 
       var ratings = this.Array.from(this.document.querySelectorAll(".rating"));
 
-      window.addEventListener("click", function(e){
-        if(!e.target.classList.contains("ratings")){
-          ratings.forEach( function(element) {
+      window.addEventListener("click", function (e) {
+        if (!e.target.classList.contains("ratings")) {
+          ratings.forEach(function (element) {
             element.classList.remove("show");
           });
         }
       })
 
-      window.addEventListener("resize", function(){
+      window.addEventListener("resize", function () {
         checkWindowSize();
       })
 
-      function checkWindowSize(){
-        if(window.innerWidth <= 1024 ){
-          document.querySelector(".ratings").addEventListener("click", function(){
-            ratings.forEach( function(element) {
+      function checkWindowSize() {
+        if (window.innerWidth <= 1024) {
+          document.querySelector(".ratings").addEventListener("click", function () {
+            ratings.forEach(function (element) {
               element.classList.add("show");
             });
           })
@@ -435,7 +490,7 @@ window.onload = function () {
           var position = ratings.indexOf(element);
           if (position <= rating) {
             element.classList.add("rated-star");
-          } else { 
+          } else {
             element.classList.remove("rated-star");
             element.classList.add("non-rated-star");
           }
@@ -560,7 +615,7 @@ window.onload = function () {
               if (Data.results.indexOf(element) < 3) {
                 var LiNode = createNode("li", appendHere, "");
                 var SpanNode = createNode("span", LiNode, element.author);
-                var info = element.content.slice(0, 300) + "....";
+                var info = element.content.slice(0, 1000) + "....";
                 var ParagraphNode = createNode("p", LiNode, info);
               }
             });
@@ -651,11 +706,16 @@ window.onload = function () {
               AnchorNode.setAttribute("data-tmdb-id", element.id);
 
               AnchorNode.addEventListener("click", function () {
-                toTheNextPage(AnchorNode)
+                toTheNextPage(AnchorNode);
               });
             }
-          }); 
-        appendHere.classList.add("active-dropdown");
+          });
+
+          // add condition beacause sometimes user clears the search fiels and still search box appears because of asyncronous search data
+          if (searchFeild.value !== "") { 
+            console.log(searchFeild.value);
+            appendHere.classList.add("active-dropdown");
+          }
         }
       } else { appendHere.classList.remove("active-dropdown"); }
     }
@@ -671,17 +731,17 @@ window.onload = function () {
           var LiNode = createNode("li", appendHere, "");
           var DivNode = createNode("div", LiNode, "");
           var HeadingNode = createNode("h2", DivNode, element[title]);
-          var SpanNode = createNode("span", DivNode, element[date]);
+          // var SpanNode = createNode("span", DivNode, element[date]);
 
-          var info = element.overview.slice(0, 150) + "....";
-          var PNode = createNode("p", DivNode, info);
+          // var info = element.overview.slice(0, 150) + "....";
+          // var PNode = createNode("p", DivNode, info);
           var AnchorNode = createNode("a", DivNode, "read more")
 
           var src = null;
           if (window.innerWidth <= 767) {
-            var src = "https://image.tmdb.org/t/p/w92" + element.poster_path;
+            src = "https://image.tmdb.org/t/p/w92" + element.poster_path;
           } else {
-            var src = "https://image.tmdb.org/t/p/w300" + element.backdrop_path;
+            src = "https://image.tmdb.org/t/p/w300" + element.backdrop_path;
           }
 
           LiNode.setAttribute("style", "background-image:url(" + src + ")");
@@ -690,7 +750,7 @@ window.onload = function () {
           AnchorNode.setAttribute("data-tmdb-id", element.id);
 
           AnchorNode.addEventListener("click", function () {
-            toTheNextPage(AnchorNode)
+            toTheNextPage(AnchorNode);
           });
         });
 
@@ -699,14 +759,14 @@ window.onload = function () {
           $(appendHere).slick({
             dots: true,
             autoplay: true,
-            autoplayspeed: 5000
+            autoplayspeed: 8000
           });
         });
       }
     }
 
     // funnction for slider development
-    function sliderDevelopment(url, place, title, date) {
+    function sliderDevelopment(url, place, title, date, config) {
       place.innerHTML = "";
       getData(url, callback);
 
@@ -716,11 +776,11 @@ window.onload = function () {
           var FigureNode = createNode("figure", LiNode, "");
           var ImageNode = createNode("img", FigureNode, "");
           var HeadingNode = createNode("h4", LiNode, element[title]);
-          var SpanNode = createNode("span", LiNode, element[date]);
+          // var SpanNode = createNode("span", LiNode, element[date]);
 
-          var info = element.overview.slice(0, 70) + "....";
+          // var info = element.overview.slice(0, 70) + "....";
 
-          var PNode = createNode("p", LiNode, info);
+          // var PNode = createNode("p", LiNode, info);
           var AnchorNode = createNode("a", LiNode, "read more");
           var DivNode = createNode("div", LiNode, "");
 
@@ -738,10 +798,10 @@ window.onload = function () {
 
           ImageNode.setAttribute("src", src);
           AnchorNode.setAttribute("class", "read-more");
-          AnchorNode.setAttribute("data-tmdb-id", element.id);
+          AnchorNode.setAttribute("data-config", config);
 
           AnchorNode.addEventListener("click", function () {
-            toTheNextPage(AnchorNode)
+            toThePaginationPage(AnchorNode)
           });
         });
 
@@ -751,27 +811,27 @@ window.onload = function () {
             speed: 300,
             autoplay: true,
             autoplayspeed: 5000,
-            slidesToShow: 4,
+            slidesToShow: 5,
             slidesToScroll: 2,
             responsive: [
               {
                 breakpoint: 1024,
                 settings: {
-                  slidesToShow: 3,
+                  slidesToShow: 4,
                   slidesToScroll: 3
                 }
               },
               {
                 breakpoint: 767,
                 settings: {
-                  slidesToShow: 2,
+                  slidesToShow: 3,
                   slidesToScroll: 2
                 }
               },
               {
                 breakpoint: 540,
                 settings: {
-                  slidesToShow: 1,
+                  slidesToShow: 2,
                   slidesToScroll: 1
                 }
               }
@@ -782,7 +842,7 @@ window.onload = function () {
     }
 
     // function for galleryDevelopment
-    function galleryDevelopment(url, appendHere, title, completeLoading = false) {
+    function galleryDevelopment(url, appendHere, title, config, completeLoading = false) {
       getData(url, callback);
 
       function callback(Data) {
@@ -799,10 +859,10 @@ window.onload = function () {
             var src = "https://image.tmdb.org/t/p/w300" + element.backdrop_path;
 
             ImageNode.setAttribute("src", src);
-            LiNode.setAttribute("data-tmdb-id", element.id);
+            LiNode.setAttribute("data-config", config);
 
             LiNode.addEventListener("click", function () {
-              toTheNextPage(LiNode)
+              toThePaginationPage(LiNode)
             });
           }
         });
@@ -811,11 +871,82 @@ window.onload = function () {
       }
     }
 
+    function paginationListDevelopment(url, appendHere, title, date) {
+      appendHere.innerHTML = "";
+      getData(url, callback);
+
+      function callback(Data) {
+
+        Data.results.forEach(function (element) {
+          if (element.backdrop_path !== null) {
+            var LiNode = createNode("li", appendHere, "", element.id);
+            var FigureNode = createNode("figure", LiNode, "");
+            var ImageNode = createNode("img", FigureNode, "");
+            console.log(element[title]);
+
+            if (element[title].includes(":") || element[title].includes("-") || element[title].includes("(")) {
+              var heading = element[title].replace(":", "+");
+              heading = heading.replace("-", "+");
+              heading = heading.replace("(", "+");
+              heading = heading.slice(0, heading.indexOf("+"));
+
+              createNode("h4", LiNode, heading);
+            } else { createNode("h4", LiNode, element[title]); }
+            var SpanNode = createNode("span", LiNode, element[date]);
+
+            var DivNode = createNode("div", LiNode, "");
+
+            var rating = Math.floor(parseInt(element.vote_average)) / 2;
+
+            for (var i = 1; i <= 5; i++) {
+              var RatingNode = createNode("a", DivNode, "rating");
+
+              if (i < rating) {
+                RatingNode.setAttribute("class", "rating rated-star");
+              } else { RatingNode.setAttribute("class", "rating non-rated-star"); }
+            }
+
+            var src = "https://image.tmdb.org/t/p/w92" + element.backdrop_path;
+
+            ImageNode.setAttribute("src", src);
+            LiNode.setAttribute("data-tmdb-id", element.id);
+
+            LiNode.addEventListener("click", function () {
+              toTheNextPage(LiNode);
+            });
+          }
+        });
+
+        var listArray = Array.from(appendHere.querySelectorAll("li"))
+        var index = 0;
+
+        function addAnimationClass() {
+          setTimeout(function () {
+            if (index < listArray.length) {
+              listArray[index].classList.add("slide-in");
+              index++;
+              addAnimationClass();
+            }
+          }, 100)
+        }
+
+        addAnimationClass();
+
+        // removeLoader();
+      }
+    }
+
+    function toThePaginationPage(element) {
+      var config_data = element.getAttribute("data-config");
+      var userid = currentUrl.searchParams.get("userid");
+      var category = currentUrl.searchParams.get("category");
+      window.location.assign("pagination.html?userid=" + userid + "&category=" + category + "&config=" + config_data);
+    }
+
     // function for moving to the next page 
     function toTheNextPage(element) {
-      var currentUrl = new URL(window.location.href)
       var category = currentUrl.searchParams.get("category");
-      var userid = currentUrl.searchParams.get("userid")
+      var userid = currentUrl.searchParams.get("userid");
       var uniqueId = element.getAttribute("data-tmdb-id");
       window.location.assign("details.html?userid=" + userid + "&category=" + category + "&uniqueid=" + uniqueId);
     }
