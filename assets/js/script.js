@@ -4,6 +4,14 @@ window.onload = function () {
 
   var page_class = this.document.querySelector(".container");
 
+  // function for removing preloader ( THE TOP MOST COMMON FUNCTION )
+  function removeLoader() {
+    setTimeout(function () {
+      document.querySelector(".loader").classList.add("none");
+      document.querySelector("html").classList.remove("no-scroll");
+    }, 3000);
+  }
+
   if (page_class.classList.contains("login-page")) {
     console.log("hii");
 
@@ -21,8 +29,6 @@ window.onload = function () {
       email_regex: /^([0-9a-zA-Z\_\.\-]+)@([0-9a-zA-Z\_\.\-]+)\.([a-zA-Z]+)$/,
       password_regex: /((?=.*[!@#$%^&*])(?=.*[0-9])(?=.*[a-zA-Z])){4,15}/
     }
-
-    // window.addEventListener("resize", pannelControl);
 
     // function for displaying the form modal
     formButton.forEach(function (element) {
@@ -47,17 +53,6 @@ window.onload = function () {
         } else { formModal.classList.remove("active"); }
       })
     });
-
-    // // function for controlling the pannel container
-    // function pannelControl() {
-    //   if (window.innerWidth <= 540) {
-    //     document.querySelector(".pannel-container").classList.add("none");
-    //   } else {
-    //     document.querySelector(".pannel-container").classList.remove("none");
-    //   }
-    // }
-
-    // pannelControl();
 
     // function for displaying the video modal
     videoLi.forEach(function (element) {
@@ -236,6 +231,10 @@ window.onload = function () {
         });
       });
     }
+
+    // for removing preloader
+    removeLoader();
+    
   } else {
 
     // some confidential information
@@ -255,14 +254,6 @@ window.onload = function () {
     // javascript for rest of the pages except login page 
     var hamburger = this.document.querySelector(".hamburger");
     var searchFeild = this.document.querySelector(".input-text");
-
-    // function for removing loader
-    function removeLoader() {
-      setTimeout(function () {
-        document.querySelector(".loader").classList.add("none");
-        document.querySelector("html").classList.remove("no-scroll");
-      }, 3000);
-    }
 
     // function for activating the nav bar
     hamburger.addEventListener("click", function () {
@@ -442,6 +433,33 @@ window.onload = function () {
       var tmdbId = currentUrl.searchParams.get("uniqueid");
       var title, tagline;
 
+      var userData = JSON.parse(window.localStorage[userid]);
+      console.log(userData);
+      
+      var ratings = this.Array.from(this.document.querySelectorAll(".rating"));
+
+      if(userData.ratedShows){
+        for (var unikey in userData.ratedShows) {
+          if(tmdbId == unikey.split("ID")[1]){
+            ratings.forEach(function(element) {
+              if(ratings.indexOf(element) < parseInt(userData.ratedShows[unikey].split(" ")[0])){
+                element.classList.add("rated-star");
+              } else{
+                element.classList.add("non-rated-star");
+              }
+            });
+          }
+        }
+      }
+
+      if(userData.favouriteShows){
+        userData.favouriteShows.forEach(function(element) {
+          if(tmdbId == element.split("ID")[1]){
+            document.querySelector(".favourite").classList.add("added-to-favourite");
+          }
+        });
+      }
+
       if (category === "movie") {
         title = "title";
         tagline = "tagline";
@@ -450,8 +468,6 @@ window.onload = function () {
         title = "name";
         tagline = "first_air_date";
       }
-
-      var ratings = this.Array.from(this.document.querySelectorAll(".rating"));
 
       window.addEventListener("click", function (e) {
         if (!e.target.classList.contains("ratings")) {
@@ -485,7 +501,7 @@ window.onload = function () {
       });
 
       function rateThis(rating) {
-        var ratedStar = rating + 1;
+
         ratings.forEach(function (element) {
           var position = ratings.indexOf(element);
           if (position <= rating) {
@@ -496,26 +512,51 @@ window.onload = function () {
           }
         });
 
-        var userData = JSON.parse(window.localStorage[userid]);
-        console.log(userData);
-
         if (!userData.ratedShows) {
-          var ratedShows = { [category + "ID" + tmdbId]: ratedStar + " STAR" }
+          var ratedShows = { [category + "ID" + tmdbId]: rating + 1 + " STAR" }
           userData["ratedShows"] = ratedShows;
           window.localStorage.setItem(userid, JSON.stringify(userData));
         } else {
+          var uniKey = category + "ID" + tmdbId;
           for (var uniqueid in userData.ratedShows) {
-            var key = category + "ID" + tmdbId;
-            if (uniqueid == key) {
-              userData.ratedShows[uniqueid] = ratedStar + " STAR";
+            if (uniqueid == uniKey) {
+              userData.ratedShows[uniqueid] = rating + 1 + " STAR";
               window.localStorage.setItem(userid, JSON.stringify(userData));
               return false;
             }
           }
-          userData.ratedShows[category + "ID" + tmdbId] = ratedStar + " STAR";
+          userData.ratedShows[uniKey] = rating + 1 + " STAR";
           window.localStorage.setItem(userid, JSON.stringify(userData));
         }
       }
+
+      // function for add to favourites
+      document.querySelector(".favourite").addEventListener("click", function () {
+
+        this.classList.add("added-to-favourite");
+
+        if (!userData.favouriteShows) {
+          var favouriteShows = [category + "ID" + tmdbId];
+          userData["favouriteShows"] = favouriteShows;
+          window.localStorage.setItem(userid, JSON.stringify(userData));
+        } else {
+
+          var addToFavourite = true;
+          userData.favouriteShows.forEach(function (element) {
+            if (element == category + "ID" + tmdbId) {
+              userData.favouriteShows.splice(userData.favouriteShows.indexOf(element), 1);
+              document.querySelector(".favourite").classList.remove("added-to-favourite");
+              window.localStorage.setItem(userid, JSON.stringify(userData));
+              addToFavourite = false;
+            }
+          });
+
+          if (addToFavourite) {
+            userData.favouriteShows.push(category + "ID" + tmdbId);
+            window.localStorage.setItem(userid, JSON.stringify(userData));
+          }
+        }
+      })
 
 
       // function for search
@@ -572,7 +613,7 @@ window.onload = function () {
           if (window.innerWidth <= 767) {
             var src = "https://image.tmdb.org/t/p/w92" + Data.poster_path;
           } else {
-            var src = "https://image.tmdb.org/t/p/w300" + Data.backdrop_path;
+            var src = "https://image.tmdb.org/t/p/w780" + Data.backdrop_path;
           }
 
           document.querySelector(".detail-banner").setAttribute("style", "background-image:url(" + src + ")");
@@ -712,7 +753,7 @@ window.onload = function () {
           });
 
           // add condition beacause sometimes user clears the search fiels and still search box appears because of asyncronous search data
-          if (searchFeild.value !== "") { 
+          if (searchFeild.value !== "") {
             console.log(searchFeild.value);
             appendHere.classList.add("active-dropdown");
           }
@@ -741,7 +782,7 @@ window.onload = function () {
           if (window.innerWidth <= 767) {
             src = "https://image.tmdb.org/t/p/w92" + element.poster_path;
           } else {
-            src = "https://image.tmdb.org/t/p/w300" + element.backdrop_path;
+            src = "https://image.tmdb.org/t/p/w780" + element.backdrop_path;
           }
 
           LiNode.setAttribute("style", "background-image:url(" + src + ")");
@@ -818,20 +859,20 @@ window.onload = function () {
                 breakpoint: 1024,
                 settings: {
                   slidesToShow: 4,
-                  slidesToScroll: 3
+                  slidesToScroll: 2
                 }
               },
               {
                 breakpoint: 767,
                 settings: {
-                  slidesToShow: 3,
-                  slidesToScroll: 2
+                  slidesToShow: 2,
+                  slidesToScroll: 1
                 }
               },
               {
                 breakpoint: 540,
                 settings: {
-                  slidesToShow: 2,
+                  slidesToShow: 1,
                   slidesToScroll: 1
                 }
               }
@@ -856,7 +897,7 @@ window.onload = function () {
             var ImageNode = createNode("img", FigureNode, "");
             var SpanNode = createNode("span", LiNode, element[title]);
 
-            var src = "https://image.tmdb.org/t/p/w300" + element.backdrop_path;
+            var src = "https://image.tmdb.org/t/p/w780" + element.backdrop_path;
 
             ImageNode.setAttribute("src", src);
             LiNode.setAttribute("data-config", config);

@@ -115,15 +115,6 @@ li {
 
 .login-page .wrapper { width: 90%; }
 
-header {
-  width: 100%;
-  padding: 0.5% 0;
-  position: sticky;
-  z-index: 2;
-  top: 0;
-  left: 0;
-}
-
 .login-page header { 
   position: absolute;
   background-color: transparent;
@@ -161,8 +152,13 @@ header {
 }
 
 /* main header styling starts */
-
 header {
+  width: 100%;
+  padding: 0.5% 0;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  left: 0;
   background-color: #FFF;
   box-shadow: 5px 10px 18px rgba(0,0,0,0.5);
 }
@@ -180,7 +176,7 @@ header .wrapper {
           justify-content: space-between;
 }
 
-.login-page h1{ padding:  0 2%; }
+.login-page h1 { padding:  0 2%; }
 
 h1 {
   flex-basis: 6%;
@@ -277,8 +273,7 @@ nav {
 .dropdown ul {
   width: 90%;
   padding: 5%;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-radius: 15px;
   display: none;
   position: absolute;
   z-index: -1;
@@ -290,9 +285,7 @@ nav {
           animation: slideup 0.6s ease-in-out;
 }
 
-.dropdown .active-dropdown {
-  display: block;
-}
+.dropdown .active-dropdown { display: block; }
 
 .dropdown ul li {
   display: block;
@@ -345,8 +338,6 @@ nav {
   }
 }
 
-
-
 /*=================================
   Header styling ends here
 =================================*/  
@@ -356,59 +347,59 @@ nav {
 =================================*/
 
 .loader{
-  position: fixed;
   width: 100%;
   height: 100vh;
-  background-color: #FFF;
+  position: fixed;
   z-index: 3;
+  background-color: #FFF;
 }
 
 .ring{
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: #013243;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
   text-indent: -9999px;
   animation: loading 2s linear infinite;
+  background-color: #013243;
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .ring::before{
   content: " ";
   text-indent: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: #FFF;
   transform: translateX(2%)
 }
 
-.ring::after{
+.ring::after {
   content: " ";
   text-indent: 0;
   width: 120%;
   height: 120%;
-  clip-path: circle(7% at 10% 50%);
-  background-color: #013243;
   position: absolute;
   top: 50%;
   left: 50%;
+  background-color: #013243;
+  clip-path: circle(7% at 10% 50%);
   transform: translateX(-50%) translateY(-50%);
   animation: reverseloading 2s linear infinite;
 }
 
-@keyframes loading{
-  0%{
+@keyframes loading {
+  0% {
     transform: translateX(-50%) translateY(-50%) rotate(0deg);
   }
 
-  100%{
+  100% {
     transform: translateX(-50%) translateY(-50%) rotate(360deg);
   }
 }
@@ -423,6 +414,7 @@ nav {
   }
 }
 
+/*login-page banner section styling starts */
 .banner {
   width: 100%;
   height: 100vh;
@@ -587,8 +579,7 @@ nav {
   color: rgba(255,255,255,0.95);
 }
 
-
-
+/* pop-up modal styling starts */
 .modal{
   width: 100%;
   height: 100vh;
@@ -610,6 +601,7 @@ nav {
           justify-content: center;
 }
 
+/* form modal styling starts */
 .form-modal {
   width: 70%;
   border-bottom-right-radius: 40px;
@@ -624,7 +616,6 @@ nav {
   -webkit-transition: 0.6s ease-in-out;
   transition: 0.6s ease-in-out;
 }
-
 
 .sign-up-form,
 .sign-in-form {
@@ -693,52 +684,39 @@ form input{
   outline: none;
 }
 
-.form-group{
-  position: relative;
-}
-
-/* .form-group span{
-  width: 50%;
-  left: auto;
-  right: 0;
-  bottom: 90%;
-  font-size: 13px;
-  box-sizing: border-box;
-  padding: 2%;
-  color: #CF0000;
-} */
+.form-group{ position: relative; }
 
 .form-group span{
-  font-size: 12px;
-  text-transform: capitalize;
-  color: rgb(223, 37, 12);
-  visibility: hidden;
-  position: absolute;
-  right: 0;
-  bottom: 75%;
   width: 50%;
-  z-index: 1;
-  box-sizing: border-box;
-  background-color: #FFF;
   padding: 1.5%;
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 75%;
+  background-color: #FFF;
+  color: rgb(223, 37, 12);
+  font-size: 12px;
+  text-transform: capitalize;
+  visibility: hidden;
+  box-sizing: border-box;
   box-shadow: 5px 5px 18px rgba(0, 0, 0, 0.7);
 }
 
 .form-group span::before{
   content: " ";
   text-indent: 0;
-  float: right;
-  position: absolute;
-  z-index: 1;
-  background: #FFF;
+  /* float: right; */
   width: 10px;
   height: 10px;
+  position: absolute;
+  z-index: 1;
+  right: 9%;
+  bottom: -4px;
+  background: #FFF;
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg);
-  bottom: -4px;
-  right: 9%;
 }
 
 .green,
@@ -770,22 +748,14 @@ form input{
   color: rgb(223, 37, 12);
 }
 
-.success input{
-  border: 2px solid #004445;
-}
+.success input{ border: 2px solid #004445; }
 
 .success .green,
-.error .red{
-  visibility: visible;
-}
+.error .red{ visibility: visible; }
 
-.error input{
-  border: 2px solid rgb(223, 37, 12);
-}
+.error input{ border: 2px solid rgb(223, 37, 12); }
 
-.error span{
-  visibility: visible;
-}
+.error span{ visibility: visible; }
 
 .sign-in,
 .sign-up{
@@ -932,7 +902,9 @@ form input{
   font-size: 20px;
   color: #222222;
 }
+/* form modal styling ends */
 
+/* video modal styling starts */
 .video-modal{
   width: 50%;
   display: none;
@@ -972,11 +944,11 @@ form input{
     opacity: 1;
   }
 }
+/* video modal styling end */
+/* pop-up modal styling end */
+/* login-page banner section styling end */
 
 /* movies page styling starts here */
-
-.welcome { display: none; }
-
 .banner-slider .wrapper {
   overflow: hidden;
   width: 100%;
@@ -993,25 +965,14 @@ form input{
   flex-wrap: nowrap;
 }
 
+/*=================================
+  changes i did for slick slider
+=================================*/
 .on-air-slider .slick-slide,
 .most-popular-slider .slick-slide,
 .top-rated-slider .slick-slide{
   padding: 0.2% 0;
 }
-
-/* .slider li {
-  min-width: 100%;
-  height: 85vh;
-  background-image: url(../img/test.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-} */
-
- /*=================================
-  changes i did for slick slider
-=================================*/
 
 .slider .slick-slide div li {
   min-width: 100%;
@@ -1048,24 +1009,9 @@ form input{
   right: 6%;
   z-index: 1;
 }
-
-
  /*=================================
   changes completed for slick slider
 =================================*/
-
-/* .slider div {
-  width: 40%;
-  padding: 2%;
-  border-top-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  position: absolute;
-  bottom: 10%;
-  left: 15%;
-  color: #01171F;
-  background-color: rgba(255,255,255,0.7);
-  box-sizing: border-box;
-} */
 
 .slider h2 {
   padding-bottom: 2%;
@@ -1074,7 +1020,7 @@ form input{
   text-transform: uppercase;
 }
 
-.slider span {
+/* .slider span {
   padding-bottom: 2%;
   display: block;
   font-size: 15px;
@@ -1083,7 +1029,7 @@ form input{
 .slider p {
   padding-bottom: 4%;
   font-size: 15px;
-}
+} */
 
 .read-more {
   padding: 1% 4%;
@@ -1110,7 +1056,7 @@ form input{
 .counters,
 .most-popular-movies,
 .top-rated-movies {
-  padding: 2% 0;
+  padding: 4% 0;
   box-sizing: border-box;
 }
 
@@ -1133,6 +1079,9 @@ h3 {
 }
 
 
+/*=================================
+  changes i did for slick slider
+=================================*/
 .on-air-slider .slick-slide > div,
 .most-popular-slider .slick-slide > div,
 .top-rated-slider .slick-slide > div{
@@ -1160,7 +1109,9 @@ h3 {
 .most-popular-slider .slick-next{
   right: -5%;
 }
-
+/*=================================
+  changes completed for slick slider
+=================================*/
 
 .on-air-slider li,
 .most-popular-slider  li,
@@ -1180,46 +1131,6 @@ h3 {
   color: #01171F;
   box-sizing: border-box;
   box-shadow: 5px 10px 18px rgba(0,0,0,0.7);
-  opacity: 0;
-  -webkit-animation: slideup 1s ease-in-out forwards;
-          animation: slideup 0.6s ease-in-out forwards;
-
-}
-
-.on-air-slider li:nth-child(2),
-.most-popular-slider li:nth-child(2),
-.top-rated-slider li:nth-child(2) {
-  -webkit-animation: slideup 1s ease-in-out 0.5s forwards;
-          animation: slideup 0.6s ease-in-out 0.1s forwards;
-}
-
-
-.on-air-slider li:nth-child(3),
-.most-popular-slider li:nth-child(3),
-.top-rated-slider li:nth-child(3) {
-  -webkit-animation: slideup 1s ease-in-out 1s forwards;
-          animation: slideup 0.6s ease-in-out 0.2s forwards;
-}
-
-.on-air-slider li:nth-child(4),
-.most-popular-slider li:nth-child(4),
-.top-rated-slider li:nth-child(4) {
-  -webkit-animation: slideup 1s ease-in-out 1.5s forwards;
-          animation: slideup 0.6s ease-in-out 0.3s forwards;
-}
-
-.on-air-slider li:nth-child(5),
-.most-popular-slider li:nth-child(5),
-.top-rated-slider li:nth-child(5) {
-  -webkit-animation: slideup 1s ease-in-out 2s forwards;
-          animation: slideup 0.6s ease-in-out 0.4s forwards;
-}
-
-.on-air-slider li:nth-child(6),
-.most-popular-slider li:nth-child(6),
-.top-rated-slider li:nth-child(6) {
-  -webkit-animation: slideup 1s ease-in-out 2.5s forwards;
-          animation: slideup 0.6s ease-in-out 0.5s forwards;
 }
 
 .on-air-slider figure,
@@ -1264,21 +1175,19 @@ h4 {
   color: #FFF;
 }
 
-h4 + span {
+/* h4 + span {
   padding-bottom: 2%;
   display: block;
   font-size: 13px;
-}
+} */
 
 
-.on-air-slider p,
+/* .on-air-slider p,
 .most-popular-slider p,
 .top-rated-slider p {
   padding-bottom: 10%;
   font-size: 13px;
-}
-
-
+} */
 
 .on-air-slider .read-more,
 .most-popular-slider .read-more,
@@ -1289,9 +1198,8 @@ h4 + span {
 }
 
  /*=================================
-  changes completed for slick slider
+  changes i did for slick slider
 =================================*/
-
 .on-air-slider  .slick-slide li div,
 .most-popular-slider .slick-slide li div,
 .top-rated-slider .slick-slide li div {
@@ -1302,6 +1210,9 @@ h4 + span {
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
+/*=================================
+  changes completed for slick slider
+=================================*/
 
 .rating, 
 .favourite { 
@@ -1312,6 +1223,7 @@ h4 + span {
 .favourite{
   margin: 0 17px;
   cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 
 .rating::before {
@@ -1334,8 +1246,13 @@ h4 + span {
   transition: 0.3s ease-in-out;
 }
 
-.favourite:hover::before{
+.favourite:hover::before,
+.added-to-favourite::before{
   color: red;
+}
+
+.ratings:active .favourite{
+  transform: scale(0.8);
 }
 
 
@@ -1343,21 +1260,15 @@ h4 + span {
   color: #f1c40f;
 }
 
-
 .on-air-slider li:hover figure,
 .most-popular-slider li:hover figure,
 .top-rated-slider li:hover figure { background-color: rgba(0,0,0,0.4); }
-
-
 
 .on-air-slider li:hover div,
 .most-popular-slider li:hover div,
 .top-rated-slider li:hover div { opacity: 1; }
 
-
-
 .on-air-slider li:hover img,
-.on-air-slider li:nth-child(2),
 .most-popular-slider li:hover img,
 .top-rated-slider li:hover img {
   -webkit-transform: scale(1.3);
@@ -1544,7 +1455,7 @@ h4 + span {
   box-sizing: border-box;
 }
 
-.to-the-top {
+/* .to-the-top {
   text-indent: -9999px;
   position: fixed;
   bottom: 15%;
@@ -1564,10 +1475,9 @@ h4 + span {
           justify-content: center;
   -webkit-box-align: center;
           align-items: center;
-}
+} */
 
 /* detail page styling starts here */
-
 .detail-banner{
   background-image: url(../img/test.jpg);
   background-size: cover;
@@ -1727,11 +1637,12 @@ h4 + span {
 
 .related ul{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
 }
 
 .related ul li{
-  flex-basis: 20%;
+  flex-basis: 16.66%;
   position: relative;
 }
 
@@ -1749,6 +1660,7 @@ h4 + span {
   left: 0;
   width: 100%;
   height: 100%;
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1779,19 +1691,11 @@ h4 + span {
 /* detail page styling ends here */
 
 /* pagination page styling starts here */
-/* 
-.pagination .loader{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-} */
-
 .pagination-section{
   padding-top: 5%;
   position: relative;
 }
+
 .pagination-section .wrapper{
   position: relative;
 }
@@ -1815,8 +1719,6 @@ h4 + span {
   cursor: pointer;
   color: #01171F;
   margin: 0 5px;
-  /* border-bottom-left-radius: 10px;
-  border-top-right-radius: 10px; */
   transition: 0.3s ease-in-out;
 }
 
@@ -1842,8 +1744,6 @@ h4 + span {
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* box-shadow: 5px 10px 18px rgba(0,0,0,0.2); */
-  /* border-bottom: 5px solid #01171F; */
   margin-bottom: 0.5%;
   position: relative;
   width: 95%;
@@ -1937,9 +1837,6 @@ h4 + span {
 .no-scroll{
   overflow: hidden;
 }
-
-
-
 /*=================================
   main styling ends here
 =================================*/
@@ -2141,6 +2038,7 @@ footer{
   h1{
     flex-basis: 10%;
   }
+
   .active-search input{
     width: 250px;
   }
@@ -2150,7 +2048,7 @@ footer{
   }
 
   .dropdown .read-more{
-    font-size: 9px;
+    font-size: 15px;
   }
 
   .hamburger {
@@ -2362,7 +2260,11 @@ footer{
   .airing-today-tvshows li:nth-child(1),
   .trending-news li:nth-child(1),
   .upcoming-movies li:nth-child(1),
-  .now-playing-movies li:nth-child(1) {
+  .now-playing-movies li:nth-child(1),
+  .airing-today-tvshows li:nth-child(4),
+  .trending-news li:nth-child(4),
+  .upcoming-movies li:nth-child(4),
+  .now-playing-movies li:nth-child(4) {
     width: 100%;
     float: left;
   }
@@ -2375,7 +2277,15 @@ footer{
 .airing-today-tvshows li:nth-child(3),
 .trending-news li:nth-child(3),
 .upcoming-movies li:nth-child(3),
-.now-playing-movies li:nth-child(3){
+.now-playing-movies li:nth-child(3),
+.airing-today-tvshows li:nth-child(5),
+.trending-news li:nth-child(5),
+.upcoming-movies li:nth-child(5),
+.now-playing-movies li:nth-child(5),  
+.airing-today-tvshows li:nth-child(6),
+.trending-news li:nth-child(6),
+.upcoming-movies li:nth-child(6),
+.now-playing-movies li:nth-child(6){
   width: 50%;
 }
 
@@ -2406,23 +2316,44 @@ footer{
   .related ul li span{
     font-size: 13px;
   }
+
+  .related ul li{
+    flex-basis: 33.33%;
+  }
 }
 
 
 /*media query for 540px starts here*/
 @media only screen and (max-width: 540px){
+
+  header{
+    padding: 2% 0;
+  }
+  
+  h1{
+    flex-basis: 20%;
+  }
   
   .dropdown{
     margin: 0 10px 0 0;
+    position: static;
   }
 
   .dropdown input {
-    width: 25px;
-    height: 25px;
+    height: auto;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 85%;
+    margin: 0 7.5%;
+    display: none;
+    padding: 2.5% 15% 2.5% 10%;
   }
 
   .search {
-    width: 25px;
+    width: 40px;
+    position: relative;
+    height: 40px;
   }
 
   .search::before{
@@ -2430,7 +2361,14 @@ footer{
   }
 
   .active-search input{
-    width: 190px;
+    display: block;
+  }
+
+  .dropdown ul{
+    padding-top: 5%;
+    width: 75%;
+    margin: 0 7.5%;
+    top: 130%;
   }
 
   .loginpage-header li:nth-child(2){
@@ -2500,6 +2438,10 @@ footer{
   /*=================================
   changes i did for slick
 =================================*/ 
+
+.slider .slick-slide li div{
+  padding: 7% 0 7% 15%;
+}
   .slider h2 { font-size: 15px; }
 
   .slick-arrow,
@@ -2512,12 +2454,8 @@ footer{
   }
 
   .counters li{
-    width: 50%;
-  }
-
-  .counters li:first-child,
-  .counters li:nth-child(2) {
-    padding-bottom: 5%;
+    width: 100%;
+    padding: 6% 0;
   }
 
   .counters li span:last-child{
@@ -2526,6 +2464,10 @@ footer{
 
   .airing-today-tvshows span, .trending-news span, .upcoming-movies span, .now-playing-movies span{
     font-size: 12px;
+  }
+
+  .airing-today-tvshows ul, .trending-news ul, .upcoming-movies ul, .now-playing-movies ul{
+    margin: 10% 0;
   }
 
     
@@ -2594,15 +2536,15 @@ footer{
   .related ul li span{
     font-size: 9px;
   }
+
+  
+  .related ul li{
+    flex-basis: 50%;
+  }
 }
 
 
 @media only screen and (max-width: 320px){
-
-
-  .active-search input{
-    width: 150px;
-  }
 
   .form-modal{
     width: 100%;
